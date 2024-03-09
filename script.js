@@ -6,13 +6,13 @@ let historyLog = [];
 
 
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(registration => {
       // Registration was successful
-      console.log('Service Worker registration successful with scope: ', registration.scope);
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
     }, function(err) {
       // registration failed :(
-      console.log('Service Worker registration failed: ', err);
+      console.log('ServiceWorker registration failed: ', err);
     });
   });
 }
