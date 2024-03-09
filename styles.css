@@ -50,6 +50,24 @@ button:hover {
   background-color: #449d44;
 }
 
+/* Math mode styles */
+.math-mode button {
+  background-color: #007bff; /* Blue for Math mode */
+}
+
+.math-mode #current-question {
+  border-color: #007bff;
+}
+
+/* Reading and Writing mode styles */
+.rw-mode button {
+  background-color: #dc3545; /* Red for RW mode */
+}
+
+.rw-mode #current-question {
+  border-color: #dc3545;
+}
+
 #session-history {
   border-top: 1px solid #444;
   padding-top: 10px;

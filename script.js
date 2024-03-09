@@ -3,7 +3,20 @@ let questionTime = 0;
 let interval;
 let historyLog = [];
 
+let mode = 'math'; // Default mode
 
+// Function to toggle mode
+function toggleMode() {
+  if (mode === 'math') {
+    mode = 'rw';
+    document.body.classList.add('rw-mode');
+    document.body.classList.remove('math-mode');
+  } else {
+    mode = 'math';
+    document.body.classList.add('math-mode');
+    document.body.classList.remove('rw-mode');
+  }
+}
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -35,7 +48,8 @@ function formatTime(time) {
 
 function nextQuestion() {
   clearInterval(interval);
-  historyLog.push(`Question: ${formatTime(questionTime)}`);
+  const modeLabel = mode === 'math' ? 'MTH Question' : 'RW Question';
+  historyLog.push(`${historyLog.length + 1}. ${modeLabel}: ${formatTime(questionTime)}`);
   questionTime = 0;
   startTimer();
   updateHistory();
@@ -133,13 +147,16 @@ function endCurrentActivity() {
 }
 
 // Modify your existing buttons to use the startActivity function
+document.getElementById('mode-toggle').addEventListener('click', toggleMode)
 document.getElementById('next-question').addEventListener('click', () => startActivity('Question'));
 document.getElementById('break').addEventListener('click', () => startActivity('Break'));
 document.getElementById('theory').addEventListener('click', () => startActivity('Theory'));
 document.getElementById('end-session').addEventListener('click', endCurrentActivity);
 
 
+document.body.classList.add('math-mode');
 
-
-
-startTimer(); // Start the timer automatically when the page loads
+window.addEventListener('load', () => {
+  startTimer(); // Or any other initialization function you have
+  toggleMode(); // This sets the initial mode to Math, toggle to switch to RW
+});
