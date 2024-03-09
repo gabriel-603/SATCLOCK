@@ -1,0 +1,22 @@
+{
+    "short_name": "Study Timer",
+    "name": "SAT Study Timer",
+    "icons": [
+      {
+        "src": "icons/icon256.png",
+        "type": "image/png",
+        "sizes": "256x256"
+      },
+      {
+        "src": "icons/icon512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/sat_clock/",
+    "scope": "/sat_clock/",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+  }
+  

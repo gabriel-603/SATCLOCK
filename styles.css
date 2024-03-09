@@ -1,0 +1,74 @@
+body, h1, h2, h3, button {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #c7c7c7;
+}
+
+body {
+  background-color: #1e1e1e;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#timer {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  background-color: #2e2e2e;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+h1, h2 {
+  background-color: #5cb85c;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+h3, button {
+  color: #fff;
+}
+
+button {
+  background-color: #4cae4c;
+  border: none;
+  border-radius: 5px;
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #449d44;
+}
+
+#session-history {
+  border-top: 1px solid #444;
+  padding-top: 10px;
+  max-height: 90px; /* Adjust based on your layout */
+  overflow: auto;
+}
+
+#session-history div {
+  border-bottom: 1px solid #555;
+  padding: 5px 0;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  h1, h2 {
+    font-size: 16px;
+  }
+}
