@@ -147,7 +147,7 @@ function endCurrentActivity() {
 }
 
 // Modify your existing buttons to use the startActivity function
-document.getElementById('mode-toggle').addEventListener('click', toggleMode)
+document.getElementById('mode-toggle').addEventListener('click', toggleMode())
 document.getElementById('next-question').addEventListener('click', () => startActivity('Question'));
 document.getElementById('break').addEventListener('click', () => startActivity('Break'));
 document.getElementById('theory').addEventListener('click', () => startActivity('Theory'));
