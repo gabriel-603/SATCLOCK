@@ -7,20 +7,23 @@
   <link rel="manifest" href="manifest.json">
 
 </head>
-<body>
+<body class="math-mode">
   <div id="timer">
     <h1 id="total-time">Total Time: 00:00:00</h1>
     <h2 id="current-question">Current Question: 00:00:00</h2>
-    <button id="next-question">Next Question</button>
-    <button id="break">Start Break</button>
-    <button id="theory">Theory</button>
-    <button id="mode-toggle">Toggle Mode</button>
+    <div id="button-container">
+      <button id="next-question">Next Question</button>
+      <button id="break">Start Break</button>
+      <button id="theory">Theory</button>
+      <button id="mode-toggle">Toggle Mode</button>
+    </div>
     <div id="session-history">
       <h3>Session History</h3>
       <!-- Session history items will go here -->
     </div>
-    
-    <button id="end-session">End Session</button>
+    <div id="end-session-container">
+      <button id="end-session">End Session</button>
+    </div>
   </div>
 
   <!-- Include your JavaScript file -->

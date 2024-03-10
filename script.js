@@ -2,22 +2,31 @@ let totalTime = 0;
 let questionTime = 0;
 let interval;
 let historyLog = [];
-
+let currentActivity = 'Question'; // Variable to track the current activity type
 let mode = 'math'; // Default mode
 
 // Function to toggle mode
+let currentModeForLog = 'MTH'; // Default log mode
+
 function toggleMode() {
-  if (mode === 'math') {
-    mode = 'rw';
-    document.body.classList.add('rw-mode');
-    document.body.classList.remove('math-mode');
-  } else {
-    mode = 'math';
-    document.body.classList.add('math-mode');
-    document.body.classList.remove('rw-mode');
+  mode = mode === 'math' ? 'rw' : 'math';
+  currentModeForLog = mode === 'math' ? 'MTH' : 'RW';
+
+
+   document.getElementById('current-question').textContent = `${currentActivity} Time: ${formatTime(questionTime)}`;
+}
+  // Update the text and classes for all relevant elements
+ 
+function logCurrentActivity() {
+  if (questionTime > 0) {
+    historyLog.push(`${currentActivity}: ${formatTime(questionTime)}`);
+    questionTime = 0;
+    updateHistory();
   }
 }
+  
 
+// Ensure this is called to update the display initially
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').then(registration => {
@@ -28,6 +37,12 @@ if ('serviceWorker' in navigator) {
       console.log('ServiceWorker registration failed: ', err);
     });
   });
+}
+
+
+function setCurrentActivity(activity) {
+  currentActivity = activity; // Set the current activity type
+  document.getElementById('current-question').textContent = `${currentActivity} Time: ${formatTime(questionTime)}`;
 }
 
 function startTimer() {
@@ -48,42 +63,38 @@ function formatTime(time) {
 
 function nextQuestion() {
   clearInterval(interval);
-  const modeLabel = mode === 'math' ? 'MTH Question' : 'RW Question';
-  historyLog.push(`${historyLog.length + 1}. ${modeLabel}: ${formatTime(questionTime)}`);
+  setCurrentActivity(mode === 'math' ? 'MTH Question' : 'RW Question');
+  historyLog.push(`${currentModeForLog} Question: ${formatTime(questionTime)}`);
   questionTime = 0;
   startTimer();
   updateHistory();
 }
 
 function startBreak() {
+  currentActivity = 'Break'; // Set the current activity to break
   clearInterval(interval);
-  if (questionTime > 0) {
-    historyLog.push(`Question: ${formatTime(questionTime)}`);
-    questionTime = 0;
-  }
+  logCurrentActivity(); // Log the current activity before starting the break timer
   interval = setInterval(() => {
     totalTime++;
     questionTime++;
     document.getElementById('total-time').textContent = `Total Time: ${formatTime(totalTime)}`;
     document.getElementById('current-question').textContent = `Break Time: ${formatTime(questionTime)}`;
   }, 1000);
-  updateHistory();
 }
 
+// Function to handle starting theory study
 function startTheory() {
+  currentActivity = 'Theory'; // Set the current activity to theory
   clearInterval(interval);
-  if (questionTime > 0) {
-    historyLog.push(`Question: ${formatTime(questionTime)}`);
-    questionTime = 0;
-  }
+  logCurrentActivity(); // Log the current activity before starting the theory timer
   interval = setInterval(() => {
     totalTime++;
     questionTime++;
     document.getElementById('total-time').textContent = `Total Time: ${formatTime(totalTime)}`;
     document.getElementById('current-question').textContent = `Theory Time: ${formatTime(questionTime)}`;
   }, 1000);
-  updateHistory();
 }
+
 
 
 function endSession() {
@@ -99,21 +110,14 @@ function endSession() {
 function updateHistory() {
   const historyElement = document.getElementById('session-history');
   historyElement.innerHTML = ''; // Clear history
-
-  // Create a copy of the historyLog and reverse it for display purposes
   const reversedLog = [...historyLog].reverse();
-  
+
   reversedLog.forEach((log, index) => {
     const logElement = document.createElement('div');
-    // The index for the most recent log will be the length of the array minus the current index
     logElement.textContent = `${reversedLog.length - index}. ${log}`;
-    // Append the new element at the top
     historyElement.appendChild(logElement);
   });
 }
-
-
-let currentActivity = 'Question'; // Variable to track the current activity type
 
 function startActivity(activityType) {
   clearInterval(interval);
@@ -144,14 +148,21 @@ function endCurrentActivity() {
     updateHistory();
   }
   currentActivity = 'Question'; // Reset the current activity type to default
+  
+  const logEntry = `${currentActivity}: ${formatTime(questionTime)}`;
+  const logElement = document.createElement('div');
+  logElement.textContent = logEntry;
+  // Add mode class to log element
+  logElement.classList.add(bodyClassList.contains('math-mode') ? 'math-mode' : 'rw-mode');
+  historyElement.insertBefore(logElement, historyElement.firstChild);
 }
 
 // Modify your existing buttons to use the startActivity function
-document.getElementById('mode-toggle').addEventListener('click', () => toggleMode())
-document.getElementById('next-question').addEventListener('click', () => startActivity('Question'));
-document.getElementById('break').addEventListener('click', () => startActivity('Break'));
-document.getElementById('theory').addEventListener('click', () => startActivity('Theory'));
-document.getElementById('end-session').addEventListener('click', endCurrentActivity);
+document.getElementById('mode-toggle').addEventListener('click', toggleMode);
+document.getElementById('next-question').addEventListener('click', nextQuestion);
+document.getElementById('break').addEventListener('click', startBreak);
+document.getElementById('theory').addEventListener('click', startTheory);
+document.getElementById('end-session').addEventListener('click', endSession);
 
 
 document.body.classList.add('math-mode');

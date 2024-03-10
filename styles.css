@@ -33,8 +33,29 @@ h1, h2 {
 h3, button {
   color: #fff;
 }
+#button-container {
+  display: flex;
+  justify-content: space-around; /* This will space out your buttons evenly */
+  flex-wrap: wrap; /* This allows the buttons to wrap onto the next line if the container is too narrow */
+  gap: 10px; /* This adds space between your buttons if they wrap */
+  margin-bottom: 10px; /* This adds space between the buttons and the session history */
+}
+
+#end-session-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px; /* Adjust the margin as needed */
+}
+
+#end-session {
+  /* Ensure the button itself does not stretch to fill the container */
+  flex: 0 0 auto;
+  width: 100%; /* Make the button full width */
+}
 
 button {
+  flex: 1; /* This allows the buttons to grow and fill the space in the container */
+  min-width: 90px; /* Minimum width for buttons */
   background-color: #4cae4c;
   border: none;
   border-radius: 5px;
@@ -47,30 +68,19 @@ button {
 }
 
 button:hover {
-  background-color: #449d44;
+  background-color: #7a7a7a;
 }
 
-/* Math mode styles */
-.math-mode button {
-  background-color: #007bff; /* Blue for Math mode */
+#total-time, #current-question {
+  transition: background-color 0.3s;
 }
 
-.math-mode #current-question {
-  border-color: #007bff;
-}
-
-/* Reading and Writing mode styles */
-.rw-mode button {
-  background-color: #dc3545; /* Red for RW mode */
-}
-
-.rw-mode #current-question {
-  border-color: #dc3545;
+:root {
+  --main-color: rgb(134, 134, 134); /* Default color, can be overridden by .math-mode or .rw-mode */
 }
 
 #session-history {
   border-top: 1px solid #444;
-  padding-top: 10px;
   max-height: 90px; /* Adjust based on your layout */
   overflow: auto;
 }
