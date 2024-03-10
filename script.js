@@ -162,7 +162,49 @@ document.getElementById('mode-toggle').addEventListener('click', toggleMode);
 document.getElementById('next-question').addEventListener('click', nextQuestion);
 document.getElementById('break').addEventListener('click', startBreak);
 document.getElementById('theory').addEventListener('click', startTheory);
-document.getElementById('end-session').addEventListener('click', endSession);
+document.getElementById('end-session').addEventListener('click', function() {
+  // End the current session
+  
+
+  // Prompt the user to ask if they want a report
+  const userWantsReport = window.confirm("Do you want to download a report of this session?");
+  
+  if (userWantsReport) {
+    // Call a function to generate and download the CSV
+    downloadCSV(historyLog);
+  }
+  endCurrentActivity();
+});
+
+function downloadCSV(logArray) {
+  // Define the header for the CSV
+  let csvContent = "Index,Type,Mode,Time\n";
+
+  // Iterate over the log array to build the CSV content
+  logArray.forEach((entry, index) => {
+    // Assuming your log entries are in the format "Type Mode: Time"
+    let [typeMode, time] = entry.split(': ');
+    let [mode, type] = typeMode.split(' '); // Split the type and mode
+    // Add the data to the CSV content
+    let content= `${index + 1},${type == undefined ? mode: type},${type == undefined ? "": mode},${time}\n`;
+    csvContent += content
+  });
+
+  // Convert the CSV string to a Blob
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  // Create a link and set the URL to the blob
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'session_history.csv');
+
+  // Append to the document, trigger the download, then remove the link
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+
 
 
 document.body.classList.add('math-mode');
